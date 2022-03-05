@@ -28,6 +28,7 @@ pipeline{
                 sshagent(['docker-host-dev']) {
                     script{
                         def dkrRun = "docker run -d -p 8080:8080 --name mywebapp kammana/mywebapp:${dockerTag()}"
+			//Remember the -d and -p flags? We’re running the new container in “detached” mode (in the background) and creating a mapping between the host’s port 8080 to the container’s port 8080. Without the port mapping, we wouldn’t be able to access the application.
                         sh script: "ssh -o StrictHostKeyChecking=no ec2-user@172.31.47.245 docker rm -f mywebapp",
 			   returnStatus: true
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.47.245 ${dkrRun}"
